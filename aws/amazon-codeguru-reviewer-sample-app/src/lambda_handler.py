@@ -3,6 +3,7 @@ import subprocess
 
 successes = 0
 
+
 # Dummy AWS Handler to kick off high level processes
 def lambda_handler(source_region, destination_region, credentials):
 
@@ -44,6 +45,7 @@ def sync_ddb_table(source_ddb, destination_ddb):
             TableName="table2",
             Item=item
         )
+
 
 # This code uses a mutable default argument and modifies it to return. This would leak results across calls
 def list_sns(sns, topics=[]):
