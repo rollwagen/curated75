@@ -21,7 +21,6 @@ ROUTES["reverser"] = []  # Could be multiple same service
 
 app = Flask(__name__)
 
-
 def update_routes():
     """
     Function to update ROUTES, with microservice endpoint details,
