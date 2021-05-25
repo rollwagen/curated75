@@ -14,7 +14,7 @@ class output:
     ENDC = "\033[0m"
 
 
-# Start checking pre-requisites
+# Start checking pre-requisites; comment to force pr
 
 #
 # VMWare fusion
