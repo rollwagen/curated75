@@ -47,7 +47,8 @@ def sync_ddb_table(source_ddb, destination_ddb):
         )
 
 
-# This code uses a mutable default argument and modifies it to return. This would leak results across calls
+# This code uses a mutable default argument and modifies it to return.
+# This would leak results across calls
 def list_sns(sns, topics=[]):
     response = sns.list_topics()
     for topic_arn in response["Topics"]:
@@ -55,7 +56,8 @@ def list_sns(sns, topics=[]):
     return topics
 
 
-# Infinite loop because a list is modified while being iterated over, Indices are not updated.
+# Infinite loop because a list is modified while being iterated over,
+# Indices are not updated.
 def infinite_loop():
     words = ['aws', 'amazon', 'codeguru']
     for w in words:
