@@ -1,6 +1,6 @@
 # leetcode: curated75
 
-<https://leetcode.com/list/xoqag3yj/>
+Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 
 ## (1) Two Sum [Array]
 
