@@ -102,7 +102,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
         return str(bin(n)).count("1")
 ```
 
-## Contains Duplicate [Array]
+## (50) Contains Duplicate [Array]
 
 > Given an integer array nums, return true if any value appears
 > at least twice in the array, and return false if every element is distinct.
