@@ -119,6 +119,21 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
       return False
 ```
 
+## (55) Valid Anagram [String]
+
+> Given two strings s and t, return true
+> if t is an anagram of s, and false otherwise.
+
+```python
+        # s = "anagram", t = "nagaram" 
+        if len(s) != len(t):
+            return False
+        s_counter = Counter(s)
+        t_counter = Counter(t)
+        diff = s_counter - t_counter
+        return not diff
+```
+
 ## (56) Missing Number [Array]
 
 > Given an array nums containing n distinct numbers in the range [0, n],
@@ -140,6 +155,36 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
     sum_of_range = int(nums_length * (nums_length+1) / 2)
     sum_of_nums = sum(nums)
     return sum_of_range - sum_of_nums
+```
+
+## (71) Longest Repeating Character Replacement [Sliding window, String]
+
+> You are given a string s and an integer k. You can choose any character
+> of the string and change it to any other uppercase English character.
+> You can perform this operation at most k times. Return the length of the longest
+> substring containing the same letter you can get after performing the above operations.
+
+* sliding window
+
+```python
+    max_substring_length = 0
+    letter_count = {}
+
+    left = 0
+    for right in range(len(s)):
+        letter = s[right]
+        letter_count[letter] = letter_count.get(letter, 0) + 1
+        substr_length = right - left + 1
+        most_frequent_letter = max(letter_count.values())
+        if substr_length - most_frequent_letter > k:
+            current_left_letter = s[left]
+            letter_count[current_left_letter] -= 1
+            left += 1
+            substr_length = right - left + 1
+
+        max_substring_length = max(max_substring_length, substr_length)
+
+    return max_substring_length
 ```
 
 ## (72) Non-overlapping Intervals [Interval]
