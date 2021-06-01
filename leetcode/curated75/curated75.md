@@ -141,3 +141,30 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
     sum_of_nums = sum(nums)
     return sum_of_range - sum_of_nums
 ```
+
+## (72) Non-overlapping Intervals [Interval]
+
+> Given an array of intervals intervals where intervals[i] = [start\_i, end\_i], return
+> the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+
+* "mininum intervals you need to remove" _same as_  "maximum set of non-overlapping"
+* similar as maximise 'list of activities' problem (with start/end time):
+  * sort the `activities` into ascending order by finishing time
+  * choose any `activity` with the earliest finishing time.
+  * remove from all `activities` that overlap S.
+
+```python
+    # e.g. intervals = [[1, 2], [2, 3], [3, 4], [1, 3]]
+    intervals.sort(key=lambda i: i[1])
+    skipped_list = []
+    curr_end = intervals[0][1]
+
+    for i in range(1, len(intervals)):
+        interval_start = intervals[i][0]
+        if (interval_start < curr_end): # check if overlap
+            skipped_list.append(i)
+        elif interval_start >= curr_end:
+            curr_end = intervals[i][1]
+
+    return len(skipped_list)
+```
