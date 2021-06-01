@@ -102,6 +102,23 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
         return str(bin(n)).count("1")
 ```
 
+## Contains Duplicate [Array]
+
+> Given an integer array nums, return true if any value appears
+> at least twice in the array, and return false if every element is distinct.
+
+```python
+    # solutions using 'Set'
+    return len(nums) > len(set(nums))
+
+    # solution iterating through sorted list
+      nums.sort()
+      for i in range(len(nums)-1):
+          if nums[i]==nums[i+1]:
+              return True
+      return False
+```
+
 ## (56) Missing Number [Array]
 
 > Given an array nums containing n distinct numbers in the range [0, n],
