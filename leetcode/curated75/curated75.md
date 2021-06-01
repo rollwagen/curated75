@@ -92,6 +92,16 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
             return False
 ```
 
+## (41) Number of 1 bits [Binary]
+
+> Write a function that takes an unsigned integer and returns the
+> number of '1' bits it has (also known as the _Hamming weight_).
+
+```python
+    def hammingWeight(self, n: int) -> int:
+        return str(bin(n)).count("1")
+```
+
 ## (56) Missing Number [Array]
 
 > Given an array nums containing n distinct numbers in the range [0, n],
