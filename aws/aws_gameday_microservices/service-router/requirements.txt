@@ -1,5 +1,0 @@
-boto3
-watchtower
-Flask
-requests
-aws-xray-sdk

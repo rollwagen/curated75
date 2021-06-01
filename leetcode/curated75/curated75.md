@@ -91,3 +91,26 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
         if p[left] != p[right]:
             return False
 ```
+
+## (56) Missing Number [Array]
+
+> Given an array nums containing n distinct numbers in the range [0, n],
+> return the only number in the range that is missing from the array.
+
+```python
+    # solution with requiring sorting
+    length = len(nums)
+    nums.sort()
+    for i in range(0, length + 1):
+        try:
+            if i != nums[i]:
+                return i
+        except IndexError:
+            return i
+
+    # solution using sum 'trick'
+    nums_length = len(nums)
+    sum_of_range = int(nums_length * (nums_length+1) / 2)
+    sum_of_nums = sum(nums)
+    return sum_of_range - sum_of_nums
+```
