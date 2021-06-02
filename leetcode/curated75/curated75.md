@@ -68,7 +68,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
     return max_subarr_sum
 ```
 
-## (32) Valid Parlindrome [String]
+## (32) Valid Palindrome [String]
 
 ```python
     s = "A man, a plan, a canal: Panama"
