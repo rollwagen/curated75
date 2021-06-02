@@ -127,6 +127,28 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
             return False
 ```
 
+## (40) Reverse Bits [Binary]
+
+> Reverse bits of a given 32 bits unsigned integer.
+
+```python
+        # n = 43261596  # result: 964176192
+        result = 0
+        number_of_bits = 32
+        for b in reversed(range(number_of_bits)):  # righmost excl ie. reversed 0..31
+            # get rightmost bit, and reverse index position
+            # bit at index 0, becomes new index 31 i.e. shift left by 'b' positions
+            result |= (n & 1) << b
+            # move orinigal number one to the right
+            # i.e. just processed bit 'falls off'
+            n >>= 1
+        return result
+
+        # alternative leveraging python bin/str functions
+        reversed_binary = ''.join(reversed(bin(n)[2:].zfill(32)))
+        return int(reversed_binary, 2)
+```
+
 ## (41) Number of 1 bits [Binary]
 
 > Write a function that takes an unsigned integer and returns the
