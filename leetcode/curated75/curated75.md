@@ -4,7 +4,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
 
 ## (1) Two Sum [Array]
 
-* hash map (dict) used for index lookup of diffrence (target-firstNumber)
+- hash map (dict) used for index lookup of diffrence (target-firstNumber)
 
 ```python
   def twosum1(nums, target):
@@ -18,7 +18,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
 
 ## (2) Longest Substring Without Repeating Characters [String]
 
-* sliding window with left, right pointer (indeces) of current longest substr
+- sliding window with left, right pointer (indeces) of current longest substr
 
 ```python
   def longest_substring(s):
@@ -49,7 +49,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
 
 ## (14) Maximum Subarray [Array, DP]
 
-* sliding window (sort of), dynamic programming
+- sliding window (sort of), dynamic programming
 
 ```python
     if len(nums) == 0:
@@ -66,6 +66,41 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
         max_subarr_sum = max(max_subarr_sum, curr_subarr_sum)
 
     return max_subarr_sum
+```
+
+## (30) Best Time to Buy and Sell Stock [Array, DP]
+
+> `prices[i]` is the price of a given stock on the ith day.
+> You want to maximize your profit by choosing a single day to buy
+> one stock and choosing a different day in the future to sell that stock.
+
+- Complexity:
+  - Time- _O(n)_ only a single pass is needed
+  - Space _O(1)_ two variables
+
+```python
+# e.g. prices = [7, 1, 5, 3, 6, 4]  # result: 5
+
+  # Solution 1
+  max_profit, buy = 0, sys.maxsize
+  
+  for _, sell in enumerate(prices):
+      if sell < buy:
+          buy = sell
+      else:
+          profit = sell - buy
+          max_profit = max(max_profit, profit)
+  return(max_profit)
+  
+  # Solution 2
+  min_price = prices[0]
+  max_profit = 0
+  for i in range(1, len(prices)):
+      if prices[i] < min_price:
+          min_price = prices[i]
+      profit = prices[i] - min_price
+      max_profit = max(profit, max_profit)
+  return max_profit
 ```
 
 ## (32) Valid Palindrome [String]
@@ -164,7 +199,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
 > You can perform this operation at most k times. Return the length of the longest
 > substring containing the same letter you can get after performing the above operations.
 
-* sliding window
+- sliding window
 
 ```python
     max_substring_length = 0
@@ -192,11 +227,11 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
 > Given an array of intervals intervals where intervals[i] = [start\_i, end\_i], return
 > the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
 
-* "mininum intervals you need to remove" _same as_  "maximum set of non-overlapping"
-* similar as maximise 'list of activities' problem (with start/end time):
-  * sort the `activities` into ascending order by finishing time
-  * choose any `activity` with the earliest finishing time.
-  * remove from all `activities` that overlap S.
+- "mininum intervals you need to remove" _same as_  "maximum set of non-overlapping"
+- similar as maximise 'list of activities' problem (with start/end time):
+  - sort the `activities` into ascending order by finishing time
+  - choose any `activity` with the earliest finishing time.
+  - remove from all `activities` that overlap S.
 
 ```python
     # e.g. intervals = [[1, 2], [2, 3], [3, 4], [1, 3]]
