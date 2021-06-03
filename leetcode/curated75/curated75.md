@@ -186,6 +186,55 @@ Framework for Solving DP Problems:
         return str(bin(n)).count("1")
 ```
 
+## (42) House Robber [Dynamic Programming]
+
+> the only constraint stopping you from robbing each of them is that adjacent houses have
+> security systems connected and it will automatically contact the police if two adjacent
+> houses were broken into on the same night.
+> Given an integer array nums representing the amount of money of each house, return the maximum
+> amount of money you can rob tonight without alerting the police.
+
+```python
+        # example: nums = [1,2,3,1]    output: 4
+        # index=0   nums[0]
+        # index=1   max( nums[0], nums[1])
+        # index=2   max(r[i-2] + nums[i] or r[1])
+        if len(nums) == 1: return nums[0]
+        if len(nums) == 2: return max(nums[0], nums[1])
+            
+        dp = [None]*len(nums)
+
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        dp[2] = max(dp[0]+nums[2], dp[1])
+
+        for i in range(3, len(nums)):
+            max_rob_so_far = max(dp[i-2]+nums[i], dp[i-1])
+            dp[i] = max_rob_so_far
+        
+        return max(dp) # max not necessary (is in last element)
+
+        #
+        # ...same but slightly different formatting/code:
+        #
+        length = len(nums)
+        if not length:
+            return 0
+        elif length == 1:
+            return nums[0]
+        elif length == 2:
+            return max(nums[0], nums[1])
+
+        dp = [0 for i in range(length)]
+
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        for i in range(2, length):
+            dp[i] = max( nums[i]+dp[i-2], dp[i-1])
+
+        return dp[length-1]
+```
+
 ## (50) Contains Duplicate [Array]
 
 > Given an integer array nums, return true if any value appears
