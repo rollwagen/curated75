@@ -68,6 +68,33 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
     return max_subarr_sum
 ```
 
+## (20) Climbing Stairs [Dynamic Programming]
+
+> You are climbing a staircase. It takes n steps to reach the top.
+> Each time you can either climb 1 or 2 steps. In how many distinct
+> ways can you climb to the top?
+
+Framework for Solving DP Problems:
+
+1. Define the objective function
+2. Identify base cases
+3. Write down a recurrence relation for the optimized objective function e.g `f(n) = f(n-1) + f(n-2)`
+4. What's the order of execution?  e.g.bottom-up
+5. Where to look for the answer? e.g. f(n)
+
+```python
+        if n == 1: return 1
+        if n == 2: return 2
+        dp: List = [None]  * (n + 1)
+        dp[0] = 1  # also just one distinct way to get here
+        dp[1] = 1
+        dp[2] = 2  #  = dp[1] + dp[0]
+        dp[3] = 3  #  = dp[2] + dp[1]
+        for i in range(4, n+1):
+            dp[i] = dp[i-1] + dp[i-2]
+        return dp[n]
+```
+
 ## (30) Best Time to Buy and Sell Stock [Array, DP]
 
 > `prices[i]` is the price of a given stock on the ith day.
