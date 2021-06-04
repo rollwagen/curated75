@@ -290,6 +290,31 @@ Framework for Solving DP Problems:
     return sum_of_range - sum_of_nums
 ```
 
+## (69) Sum of Two Integers
+
+```python
+    for i in range(32):
+        # (1) if bin representations are completely opposite, XOR operation will directly
+        # produce sum of numbers ( in this case carry is 0 )
+        xor_sum = a ^ b
+
+        # (2) if numbers bin representation is not completely opposite,
+        # XOR will only have part of the sum and remaining will be carry;
+        # carry-over can be produced by AND operation followed by left shift operation.
+        # e.g. 10, 11 => 1010, 1011 => (a&b)<<1 => 10100
+        carry = (a & b) << 1
+
+        # (3) now find sum of (1) and (2) i.e a is replace 'a' with XOR result
+        # and 'b' is replaced wth carry result
+        a = xor_sum
+        b = carry
+    # enforce 32bit length in case of overflow
+    if b > 0:
+        return a & 0b11111111111111111111111111111111
+    else:
+        return a
+```
+
 ## (71) Longest Repeating Character Replacement [Sliding window, String]
 
 > You are given a string s and an integer k. You can choose any character
