@@ -235,6 +235,23 @@ Framework for Solving DP Problems:
         return dp[length-1]
 ```
 
+## (44) Reverse Linked List [Linked List]
+
+> Given the `head` of a singly linked list, reverse the list, and return _the reversed list._
+
+```python
+    def reverseList(self, head: ListNode) -> ListNode:
+        node = head
+        prev = None
+        while node:
+            curr_next = node.next
+            node.next = prev
+
+            prev = node
+            node = curr_next
+        return prev
+```
+
 ## (50) Contains Duplicate [Array]
 
 > Given an integer array nums, return true if any value appears
