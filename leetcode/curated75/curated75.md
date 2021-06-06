@@ -47,6 +47,29 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
       return max_length
   ```
 
+## (6) Remove Nth Node From End of List [Linked List]
+
+> Given the `head` of a linked list, remove the nth node from the end of the list and return its head.
+
+```python
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        dummy = ListNode(-1, head) # dummy.next = head
+        left = dummy # so we arrive at n-1 to remove n
+        right = head
+        # move right ahead by n
+        while n > 0:
+            right = right.next
+            n -= 1
+        # move both pointer by 1 each until end
+        # (pointer distance remains at n)
+        while right:
+            left = left.next
+            right = right.next
+        # remove node after left
+        left.next = left.next.next
+        return dummy.next
+```
+
 ## (8) Merge Two Sorted Lists
 
 > Merge two sorted linked lists and return it as a **sorted** list.
@@ -206,6 +229,24 @@ Framework for Solving DP Problems:
             return True
         if p[left] != p[right]:
             return False
+```
+
+## (36) Linked List Cycle [Linked List]
+
+> Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
+
+```python
+    def hasCycle(self, head: ListNode) -> bool:
+        if not head:  # head.next == None ?
+            return False
+        been_here_before = set()
+        curr_node = head
+        while curr_node:
+            if curr_node in been_here_before:
+                return True
+            been_here_before.add(curr_node)
+            curr_node = curr_node.next
+        return False
 ```
 
 ## (40) Reverse Bits [Binary]
