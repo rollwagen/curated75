@@ -1,6 +1,6 @@
 # leetcode: curated75
 
-Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
+Numbering as per list [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj/) <https://leetcode.com/list/xoqag3yj/>
 
 ## (1) Two Sum [Array]
 
@@ -25,7 +25,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
       if not len(s):
           return 0
       left = 0
-      right = 0
+      Sright = 0
   
       curr_substr = set(s[0])
       max_length = 1
@@ -37,7 +37,7 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
               curr_substr.add(right_char)
               max_length = max(max_length, len(curr_substr))
           else:
-              while c := s[left]:  # delete all chars occuring left of found duplicate
+              while c := s[left]:  # delete chars left of found duplicate
                   curr_substr.remove(c)
                   left += 1
                   if c == right_char:
@@ -49,7 +49,8 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
 
 ## (6) Remove Nth Node From End of List [Linked List]
 
-> Given the `head` of a linked list, remove the nth node from the end of the list and return its head.
+> Given the `head` of a linked list, remove the nth node from the end of the list
+> and return its head.
 
 ```python
     def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
@@ -68,6 +69,52 @@ Numbering as per [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj
         # remove node after left
         left.next = left.next.next
         return dummy.next
+```
+
+## (7) Valid Parenthesis [String]
+
+> Given a string `s` containing just the characters '(', ')', '{', '}', '[' and ']',
+> determine if the input string is valid.
+
+```python
+        # ...one version
+        matching = {")":"(", "]":"[", "}":"{"}
+        if len(s) == 1 or s[0] not in matching.values():
+            return False
+        opening = deque()
+        for p in s:
+            if p in matching.values(): # dict values are opening ones
+                opening.appendleft(p)
+            else: # closing one
+                corresponding_opening = matching.get(p)
+                if opening:  # could be empty if closing before opening
+                    opening_from_stack = opening.popleft()
+                else:
+                    opening_from_stack = None
+                if not corresponding_opening == opening_from_stack:
+                    return False
+        if opening: # if not empty then not all open ones where closed
+            return False
+        return True
+
+        # second version
+        parentheses = {'(': ')', '{': '}', '[': ']'}
+        next_expected_closing = []
+        for i, p in enumerate(s):
+            if p in parentheses.keys():  # # opening parentheses
+                next_expected_closing.append(parentheses[p])
+            else:  # closing...
+                if not next_expected_closing:  # parantheses was not opened
+                    return False
+                # validate it's the correct closing type
+                closing = next_expected_closing.pop()
+                if not p == closing:
+                    return False
+        # no pending closing parenthesis
+        if not next_expected_closing:
+            return True
+        else:
+            return False
 ```
 
 ## (8) Merge Two Sorted Lists
@@ -155,7 +202,7 @@ Framework for Solving DP Problems:
 
 1. Define the objective function
 2. Identify base cases
-3. Write down a recurrence relation for the optimized objective function e.g `f(n) = f(n-1) + f(n-2)`
+3. Write down a recurrence relation for the optimized obj. func e.g `f(n) = f(n-1) + f(n-2)`
 4. What's the order of execution?  e.g.bottom-up
 5. Where to look for the answer? e.g. f(n)
 
@@ -170,6 +217,38 @@ Framework for Solving DP Problems:
         for i in range(4, n+1):
             dp[i] = dp[i-1] + dp[i-2]
         return dp[n]
+```
+
+## (26) Same Tree
+
+> Given the roots of two binary trees p and q, write a function to check if they are the
+> same or not. Two binary trees are considered the same if they are structurally
+> identical, and the nodes have the same value.
+
+```python
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        if not p and not q:  # base/edge cases...
+            return True
+        if not p or not q:  # one of both is empty
+            return False    # already know (above) not both empty
+        if p.val != q.val:  # validated with above both not empty
+            return False
+        # now we know both not empty and root value is same
+        # continue recursively comparing nodes
+        return (self.isSameTree(p.left, q.left) and
+                self.isSameTree(p.right, q.right))
+```
+
+## (28) Maximum Depth of Binary Tree
+
+> Given the `root` of a binary tree, return its maximum depth. A binary tree's maximum
+> depth is the nr of nodes along the longest path from the root down to the farthest leaf.
+
+```python
+    def height(self, node: TreeNode) -> int:
+        if node == None:
+            return 0
+        return 1 + max(self.height(node.left), self.height(node.right))
 ```
 
 ## (30) Best Time to Buy and Sell Stock [Array, DP]
@@ -257,7 +336,7 @@ Framework for Solving DP Problems:
         # n = 43261596  # result: 964176192
         result = 0
         number_of_bits = 32
-        for b in reversed(range(number_of_bits)):  # righmost excl ie. reversed 0..31
+        for b in reversed(range(number_of_bits)): # reversed index 0..31
             # get rightmost bit, and reverse index position
             # bit at index 0, becomes new index 31 i.e. shift left by 'b' positions
             result |= (n & 1) << b
@@ -364,6 +443,24 @@ Framework for Solving DP Problems:
       return False
 ```
 
+## (51) Invert Binary Tree
+
+```python
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return None
+        if root.left == None and root.right == None:
+            return root
+        else:
+            old_left   = root.left
+            root.left  = root.right
+            root.right = old_left
+            self.invertTree(root.left)
+            self.invertTree(root.right)
+        
+        return root
+```
+
 ## (55) Valid Anagram [String]
 
 > Given two strings s and t, return true
@@ -405,26 +502,27 @@ Framework for Solving DP Problems:
 ## (69) Sum of Two Integers
 
 ```python
-    for i in range(32):
-        # (1) if bin representations are completely opposite, XOR operation will directly
-        # produce sum of numbers ( in this case carry is 0 )
-        xor_sum = a ^ b
+  for i in range(32):
+      # (1) if bin representations are completely opposite, XOR operation
+      # will directly produce sum of numbers ( in this case carry is 0 )
+      xor_sum = a ^ b
 
-        # (2) if numbers bin representation is not completely opposite,
-        # XOR will only have part of the sum and remaining will be carry;
-        # carry-over can be produced by AND operation followed by left shift operation.
-        # e.g. 10, 11 => 1010, 1011 => (a&b)<<1 => 10100
-        carry = (a & b) << 1
+      # (2) if numbers bin representation is not completely opposite,
+      # XOR will only have part of the sum and remaining will be carry;
+      # carry-over can be produced by AND operation followed by left
+      # shift operation. e.g. 10, 11 => 1010, 1011 => (a&b)<<1 => 10100
+      carry = (a & b) << 1
 
-        # (3) now find sum of (1) and (2) i.e a is replace 'a' with XOR result
-        # and 'b' is replaced wth carry result
-        a = xor_sum
-        b = carry
-    # enforce 32bit length in case of overflow
-    if b > 0:
-        return a & 0b11111111111111111111111111111111
-    else:
-        return a
+      # (3) now find sum of (1) and (2)
+      # i.e a is replace 'a' with XOR result
+      # and 'b' is replaced wth carry result
+      a = xor_sum
+      b = carry
+  # enforce 32bit length in case of overflow
+  if b > 0:
+      return a & 0b11111111111111111111111111111111
+  else:
+      return a
 ```
 
 ## (71) Longest Repeating Character Replacement [Sliding window, String]
@@ -482,4 +580,33 @@ Framework for Solving DP Problems:
             curr_end = intervals[i][1]
 
     return len(skipped_list)
+```
+
+## (73) Subtree of another Tree
+
+> Given the roots of two binary trees root and subRoot, return true if there is a
+> subtree of root with the same structure and node values of subRoot and false otherwise.
+
+```python
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:  
+        if not p and not q: # both empty?
+            return True
+        if (not p or not q) or (p.val != q.val):
+            return False
+        return ( self.isSameTree(p.left, q.left) and
+                 self.isSameTree(p.right, q.right) )
+    
+    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+        if not root and not subRoot: #both empty
+            return True
+        if not root or not subRoot:
+            return False
+        if self.isSameTree(root, subRoot):
+            return True
+        else:
+            if self.isSubtree(root.left, subRoot):
+                return True
+            if self.isSubtree(root.right, subRoot):
+                return True
+        return False
 ```
