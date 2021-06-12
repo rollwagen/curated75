@@ -1,6 +1,7 @@
 # leetcode: curated75
 
-Numbering as per list [Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj/) <https://leetcode.com/list/xoqag3yj/>
+Numbering as per list \
+[Leetcode: Blind Curated 75](https://leetcode.com/list/xoqag3yj/) <https://leetcode.com/list/xoqag3yj/>
 
 ## (1) Two Sum [Array]
 
@@ -43,9 +44,131 @@ Numbering as per list [Leetcode: Blind Curated 75](https://leetcode.com/list/xoq
                   if c == right_char:
                       break
               curr_substr.add(right_char)
-  
       return max_length
   ```
+
+## (3) Longest Palindromic Substring [String]
+
+```python
+        # ideal / better solution
+        result = ""
+        result_length = 0
+        for i in range(len(s)):
+            # odd
+            left, right = i, i  # start with just center char
+            while (left >= 0 and right < len(s)) and (s[left] == s[right]):
+                current_length = right - left + 1
+                if current_length > result_length:
+                    result_length = current_length
+                    result = s[left:right+1]
+                # move outwards:
+                left  -= 1
+                right += 1
+            # even
+            left, right = i, i+1
+            while left >= 0 and right < len(s) and (s[left] == s[right]):
+                current_length = right - left + 1
+                if current_length > result_length:
+                    result_length = current_length
+                    result = s[left:right+1]
+                # move outwards:
+                left  -= 1
+                right += 1
+        return result
+            
+    
+        # own solution (messy)
+
+        # one length string is a palindrome
+        # two length string is a palindrome if both letters same
+        #   odd string from center..yes if all outwards pairs same letter
+        #   even center is two letter and need be same, from then on same as for odd
+        
+        str_length = len(s)
+        if str_length == 0:
+            return ""
+        if str_length == 1 or (str_length == 2 and s[0] == s[1]):
+            return s
+        if str_length == 2:
+            return s[0]
+        
+        longest = s[0]  # if all differenct chars min is one char e.g. 'abcdef'
+        
+        # wrong: length at least three start with third char - would miss aba
+        for i in range(1, str_length):
+            center = s[i]  # odd center (one char)
+            if s[i-1] == s[i]:  # even center (two chars)
+                center_even = s[i-1] + s[i]
+                if len(center_even) > len(longest):
+                    longest = center_even
+            else:
+                center_even = None
+            
+            # odd:
+            # s[i-1]  s   s[i+1]  if good this is new center
+            # s[i-2]  s   s[i+2]  ...and continue
+            max_range = min(i, str_length-i-1)
+            for j in range(1, max_range+1):
+                # if neither off nor even is palindrome at this stage...skip rest
+                if not center and not center_even:
+                    break
+                    
+                left  = s[i-j]
+                right = s[i+j] # same for odd and even
+                left_for_even = "" # one further out left
+                if i-1-j >= 0:
+                    left_for_even = s[i-1-j]
+                
+                # is new palindrome for odd?
+                if center and left == right:
+                    # string concat in each loop: rather expensive!
+                    # better/faster: save l/r index in tuple or even 2 ints
+                    center = left + center + right
+                else: # break i.e. don't continue checking outwards
+                    center = None
+                
+                # is new palindrome for even?
+                if center_even and left_for_even == right:
+                    center_even = left_for_even + center_even + right
+                else: # break i.e. don't continue checking outwards
+                    center_even = None
+
+                if center and len(center) > len(longest):
+                    longest = center
+                if center_even and len(center_even) > len(longest):
+                    longest = center_even                      
+        return longest    
+```
+
+## (5) 3Sum
+
+- sort list! iterate through list, devide problem into current number (nums[i]) +
+  - two sum with left/right pointer
+
+```python
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        results = []
+        nums.sort()  # !!!!
+        target = 0
+        for i  in range(0, len(nums)-1):
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            if nums[i] > target:  # lowest already > target in sorted list
+                break
+            left, right = i+1, len(nums)-1
+            while left < right:
+                s = nums[i] + nums[left] + nums[right]
+                if s == target:
+                    results.append([nums[i], nums[left], nums[right]]) # update left below
+                
+                if s <= target:
+                    left = left + 1
+                    while nums[left] == nums[left-1] and left < right:
+                        left = left + 1
+                elif s > target:
+                    right = right - 1
+        return results
+```
 
 ## (6) Remove Nth Node From End of List [Linked List]
 
@@ -117,7 +240,7 @@ Numbering as per list [Leetcode: Blind Curated 75](https://leetcode.com/list/xoq
             return False
 ```
 
-## (8) Merge Two Sorted Lists
+## (8) Merge Two Sorted Lists [Linked List]
 
 > Merge two sorted linked lists and return it as a **sorted** list.
 > The list should be made by splicing together the nodes of the first two lists.
@@ -192,6 +315,28 @@ Numbering as per list [Leetcode: Blind Curated 75](https://leetcode.com/list/xoq
     return max_subarr_sum
 ```
 
+## (16) Jump Game [Dynamic Programming]
+
+> Given an array of non-negative integers nums, you are initially positioned at the first
+> index of the array.Each element in the array represents your maximum jump length at
+> that position. Determine if you are able to reach the last index.
+
+```python
+        # e.g. [2,3,1,1,4]
+        # 0 -> 0 + 2  maxreach = index 2
+        # 1 -> 1 + 3  maxreach = index 4
+        # 2 -> 2 + 1             index 3 ...max(maxreachsofar, 3)
+        if not len or len(nums) == 1:
+            return True
+        max_reach_so_far = 0
+        for i, n in enumerate(nums):
+            if i > max_reach_so_far:  # outrun!
+                break
+            reach = i + n
+            max_reach_so_far = max(reach, max_reach_so_far)
+        return max_reach_so_far >= len(nums)-1
+```
+
 ## (20) Climbing Stairs [Dynamic Programming]
 
 > You are climbing a staircase. It takes n steps to reach the top.
@@ -219,7 +364,7 @@ Framework for Solving DP Problems:
         return dp[n]
 ```
 
-## (26) Same Tree
+## (26) Same Tree [Tree]
 
 > Given the roots of two binary trees p and q, write a function to check if they are the
 > same or not. Two binary trees are considered the same if they are structurally
@@ -239,7 +384,7 @@ Framework for Solving DP Problems:
                 self.isSameTree(p.right, q.right))
 ```
 
-## (28) Maximum Depth of Binary Tree
+## (28) Maximum Depth of Binary Tree [Tree]
 
 > Given the `root` of a binary tree, return its maximum depth. A binary tree's maximum
 > depth is the nr of nodes along the longest path from the root down to the farthest leaf.
@@ -338,7 +483,7 @@ Framework for Solving DP Problems:
         number_of_bits = 32
         for b in reversed(range(number_of_bits)): # reversed index 0..31
             # get rightmost bit, and reverse index position
-            # bit at index 0, becomes new index 31 i.e. shift left by 'b' positions
+            # bit at i=0, becomes new index 31 i.e. shift left by 'b' positions
             result |= (n & 1) << b
             # move orinigal number one to the right
             # i.e. just processed bit 'falls off'
@@ -358,6 +503,15 @@ Framework for Solving DP Problems:
 ```python
     def hammingWeight(self, n: int) -> int:
         return str(bin(n)).count("1")
+
+    # counting using shifting
+    def bitCount(number:int) -> int:
+    count = 0
+    length = 32
+    for _ in range(32):
+        count += (number & 1)
+        number >>= 1
+    return count
 ```
 
 ## (42) House Robber [Dynamic Programming]
@@ -443,7 +597,7 @@ Framework for Solving DP Problems:
       return False
 ```
 
-## (51) Invert Binary Tree
+## (51) Invert Binary Tree [Tree]
 
 ```python
     def invertTree(self, root: TreeNode) -> TreeNode:
@@ -461,6 +615,26 @@ Framework for Solving DP Problems:
         return root
 ```
 
+## (53) Lowest Common Ancestor [Tree]
+
+> Given a binary search tree , find the lowest common ancestor (LCA) of two given nodes.
+
+- take advantage of tree being sorted and greater values on right and lower values on left
+
+```python
+    # root: 'TreeNode', p: 'TreeNode', q: 'TreeNode'
+        curr = root
+        while True:
+            if p.val > curr.val and q.val > curr.val:
+                curr = curr.right  # continue look right
+            elif p.val < curr.val and q.val < curr.val:
+                curr = curr.left  # continue look left
+            else:
+                # at 'split' meaning ones larger one smaller
+                # so this is the lca
+                return curr
+```
+
 ## (55) Valid Anagram [String]
 
 > Given two strings s and t, return true
@@ -476,13 +650,13 @@ Framework for Solving DP Problems:
         return not diff
 ```
 
-## (56) Missing Number [Array]
+## (56) Missing Number [Binary]
 
 > Given an array nums containing n distinct numbers in the range [0, n],
 > return the only number in the range that is missing from the array.
 
 ```python
-    # solution with requiring sorting
+    # solution which requires sorting
     length = len(nums)
     nums.sort()
     for i in range(0, length + 1):
@@ -499,7 +673,7 @@ Framework for Solving DP Problems:
     return sum_of_range - sum_of_nums
 ```
 
-## (69) Sum of Two Integers
+## (69) Sum of Two Integers [Binary]
 
 ```python
   for i in range(32):
@@ -582,7 +756,7 @@ Framework for Solving DP Problems:
     return len(skipped_list)
 ```
 
-## (73) Subtree of another Tree
+## (73) Subtree of another Tree [Tree]
 
 > Given the roots of two binary trees root and subRoot, return true if there is a
 > subtree of root with the same structure and node values of subRoot and false otherwise.
@@ -609,4 +783,34 @@ Framework for Solving DP Problems:
             if self.isSubtree(root.right, subRoot):
                 return True
         return False
+```
+
+## Misc: Calculate Parity
+
+```python
+  def parity(number:int) -> bool:
+      result = 0
+      while number:
+          result = result ^ (number & 1)
+          number >>= 1
+      return False if result else True
+      if not result:
+          return True
+      else:
+          return False
+```
+
+## Misc: Delete Duplicate from sorted array - O(n) time and O(1) space
+
+- list is sorted i.e. repeated elements must appear one-after-anothe1,
+- `write_index`: advance pointer only if numbers [curr vs curr-1] are different
+- if same leave for new index of next different number
+
+```python
+    write_index = 1
+    for i in range(1, len(arr)-1):
+        if arr[write_index-1] != arr[i]:
+            arr[write_index] = arr[i]
+            write_index += 1
+    print(arr[0:write_index])
 ```
