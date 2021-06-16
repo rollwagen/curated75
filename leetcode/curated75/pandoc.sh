@@ -8,6 +8,8 @@ pandoc \
  --variable classoption=landscape \
  --table-of-contents \
  curated75.md -o curated75.pdf
+
+# for two column output:
  #--variable classoption=twocolumn \
  #--variable classoption=landscape \
  #--highlight-style=monochrome \
