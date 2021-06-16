@@ -294,6 +294,20 @@ Numbering as per list \
         return head.next
 ```
 
+## (13) Group Anagrams
+
+```python
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        if not strs or len(strs) == 0:
+            return []
+        anagrams = defaultdict(list)
+        for word in strs:
+            key = ''.join(sorted(word))
+            anagrams[key].append(word)
+
+        return [arr for arr in anagrams.values()]
+```
+
 ## (14) Maximum Subarray [Array, DP]
 
 - sliding window (sort of), dynamic programming
