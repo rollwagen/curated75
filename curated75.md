@@ -81,8 +81,8 @@ Numbering as per list \
 
         # one length string is a palindrome
         # two length string is a palindrome if both letters same
-        #   odd string from center..yes if all outwards pairs same letter
-        #   even center is two letter and need be same, from then on same as for odd
+        #  odd string from center..yes if all outwards pairs same letter
+        #  even center is 2 letters and need be same, from then on same as for odd
         
         str_length = len(s)
         if str_length == 0:
@@ -109,7 +109,8 @@ Numbering as per list \
             # s[i-2]  s   s[i+2]  ...and continue
             max_range = min(i, str_length-i-1)
             for j in range(1, max_range+1):
-                # if neither off nor even is palindrome at this stage...skip rest
+                # if neither off nor even is palindrome
+                # at this stage...skip rest
                 if not center and not center_even:
                     break
                     
@@ -159,7 +160,8 @@ Numbering as per list \
             while left < right:
                 s = nums[i] + nums[left] + nums[right]
                 if s == target:
-                    results.append([nums[i], nums[left], nums[right]]) # update left below
+                    results.append([nums[i], nums[left], nums[right]])
+                    # update 'left' below
                 
                 if s <= target:
                     left = left + 1
@@ -497,7 +499,7 @@ Framework for Solving DP Problems:
         number_of_bits = 32
         for b in reversed(range(number_of_bits)): # reversed index 0..31
             # get rightmost bit, and reverse index position
-            # bit at i=0, becomes new index 31 i.e. shift left by 'b' positions
+            # bit at i=0, is new index 31 i.e. shift left by 'b' positions
             result |= (n & 1) << b
             # move orinigal number one to the right
             # i.e. just processed bit 'falls off'
